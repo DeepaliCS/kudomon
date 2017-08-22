@@ -28,7 +28,7 @@ public static void main(String[] args) {
 	//CALLING THE PRINT METHOD TO PRINT ALL INFO IN CHARACTER ARRAYLIST
 	Character.PrintCollection(CharacterList);
 	
-	//DISTANCE TEST BETWEEN FRED AND SOURBULB
+	//DISTANCE TEST BETWEEN FRED AND SOURBULB (UNCOMMENT TO TEST)
 	//System.out.println("Distance: "+DistanceCalc(CharacterList, "Fred", "Sourbulb"));
 	
 	//OBJECT-ARRAYLIST CREATION TO SEPARATE KUDOMON AND TRAINERS
@@ -45,7 +45,7 @@ public static void main(String[] args) {
 	EnableMultipleCatches(CloseBy);
 	
 	//CALLING THIS METHOD TO FOR A BATTLE
-	HealthBattles(CharacterList, "Fred", "Chikapu");
+	//HealthBattles(CharacterList, "Fred", "Chikapu");
 }
 
 	//+++METHODS+++
