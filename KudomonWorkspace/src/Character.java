@@ -1,6 +1,7 @@
 import java.util.Collection;
 import java.util.Iterator;
 
+//OBJECT PURPOSE: TO STORE ALL INFORMATION OF EVERY CHARACTER IN THE GAME
 public class Character {
 	private String name;
 	private String element;
@@ -8,6 +9,7 @@ public class Character {
 	private int horizontalIndex;
 	private int verticalIndex;
 	
+	//NAME=SOURBULB, ELEMENT=GRASS, HEALTH=26, HORIZONTALINDEX=2, VERTICALINDEX=5 (2,5)
 	Character(String n, String e, int a, int h, int v) {
 	name = n; element = e; health = a; horizontalIndex = h;	verticalIndex= v;
 	}
@@ -37,6 +39,7 @@ public class Character {
 	public void SetverticalIndex(int v)
 		{verticalIndex = v;}
 		
+	//PRINTING FORMAT TO DISPLAY ALL INFORMATION
 	public void Print()	{
 		System.out.print(("("+GetName())); System.out.print(", ");
 		System.out.print(GetElement());	System.out.print(", ");	
@@ -46,6 +49,7 @@ public class Character {
 		System.out.println();
 	}
 	
+	//PRINTING ALL INFO OF EVERY INDEX IN OBJECT-ARRAYLIST (CALLED FROM KUDOMON CLASS)
 	public static void PrintCollection(Collection<Character> c) {
 		for (Iterator<Character> iter = c.iterator(); iter.hasNext();) {
 			Character x = (Character)iter.next();

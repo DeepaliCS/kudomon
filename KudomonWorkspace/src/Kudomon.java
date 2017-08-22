@@ -162,6 +162,7 @@ public static void main(String[] args) {
 	
 	static public int SetHarmAssignment (String ElementName) {
 	
+		//SWTICH STATEMENT TO ASSIGN THE AMOUNT OF HARM EACH RESPECTIVE ELEMENT CAN AFFLICT
 		int setHarm =0;
 		String Elementname = ElementName;
 	
@@ -180,12 +181,12 @@ public static void main(String[] args) {
 
 	static public ArrayList<PairedChar> EnableMultipleCatches (ArrayList<PairedChar> coorChange ) {
 	
+		//OBJECT-ARRAYLIST TO STORE NEW/CHANGED COORDINATES OR KUDOMON ACCORDING TO CLOSEST TRAINER
 		ArrayList<PairedChar> NewList = new ArrayList<PairedChar>();
-	
-		System.out.println("Cooor "+coorChange.size());
 	
 		for (int i=0; i < coorChange.size(); i++) {
 		
+			//RANDOMLY SELECT THE VERTICAL OR HORIZONTAL COORDINATES TO CHANGE AND RETURN
 			int Switch = UI(0,2);
 		
 			if (Switch ==1) {
@@ -214,61 +215,74 @@ public static void main(String[] args) {
 	}
 	static public ArrayList<PairedChar> CloseList (ArrayList<Character> Trainers, ArrayList<Character> Kudomons, ArrayList<Character> AllList) {
 
-		int smallest =1000;
 		int distancevalue=0;
 		int num=0;
-	
-		//ArrayList<Integer> DistanceList = new ArrayList<Integer>();
+		
+		//TWO OBJECT-ARRAYLIST. ONE TO STORE ALL SMALL DISTANCED KUDOMON AND OTHER TO STORE SELECTED DETAILS AND RETURN <<DOES THIS MAKE SENSE? LOL
 		ArrayList<PairedChar> SmallSearchList = new ArrayList<PairedChar>();
-		ArrayList<Integer> TempDistances = new ArrayList<Integer>();
 		ArrayList<PairedChar> SmallFoundList = new ArrayList<PairedChar>();
-	
+		
+		//USED TO STORE ALL DISTANCE VALUES AND USED TO SMALLEST DISTANCE BETWEEN A TRAINER AND KUDOMON
+		ArrayList<Integer> TempDistances = new ArrayList<Integer>();
+		
+		//RUNNING FOR ALL TRAINERS. FIND THE KUDOMON WITH SMALLEST DISTANCE TO ME
 		for (int i =0; i < Trainers.size(); i++) {
 		
+			//COLLECT THE COORDINATES OF KUDOMON AND COMPARE IT TO OTHER KUDOMON
 			for (int j =0; j< Kudomons.size(); j++) {
 			
+				//CALCULATE THE DISTANCE BETWEEN TRAINER AND KUDOMON
 				distancevalue= DistanceCalc(AllList, Kudomons.get(j).GetName(), Trainers.get(i).GetName());			
 			
+				//ADD IT IN THE FORMAT OF THE 'PAIREDCHAR' OBJECT-ARRAYLIST
 				SmallSearchList.add(new PairedChar 
 						(Kudomons.get(j).GetName(), Kudomons.get(j).GetElement(), Kudomons.get(j).GetHealth(), Kudomons.get(j).GethorizontalIndex(), Kudomons.get(j).GetverticalIndex(), 
 						Trainers.get(i).GetName(), Trainers .get(i).GetElement(), Trainers.get(i).GetHealth(), Trainers.get(i).GethorizontalIndex(),Trainers.get(i).GetverticalIndex(),
 						distancevalue));
+				
+						//ADD THE DISTANCE TO THE INTEGER ARRAYLIST
 						TempDistances.add(new Integer (distancevalue));
 			
 			}
 		
-			PairedChar.PrintCollection(SmallSearchList);
+			//PairedChar.PrintCollection(SmallSearchList);
+			
+			//COMPARE DISTANCES OF KUDOMON TO ASSIGN TO THE TRAINER
 			num = Collections.min(TempDistances);
-			System.out.println("--> "+num);
+			//System.out.println("--> "+num);
 		
-		
+			//FIND THE INDEX OF THE SMALLEST DISTANCE AND ADD IT TO THE 'SMALLFOUNDLIST' TO RETURN
 			int indexofvalue= TempDistances.indexOf(Collections.min(TempDistances));
-			System.out.println(">>>"+indexofvalue);
+			//System.out.println(">>>"+indexofvalue);
 			SmallFoundList.add(new PairedChar (
 					(SmallSearchList.get(indexofvalue).GetKName()), SmallSearchList.get(indexofvalue).GetKelement(), SmallSearchList.get(indexofvalue).GetKHealth(), SmallSearchList.get(indexofvalue).GetKhorizontalIndex(), SmallSearchList.get(indexofvalue).GetKverticalIndex(), 
 					SmallSearchList.get(indexofvalue).GetTName(), SmallSearchList .get(indexofvalue).GetTelement(), SmallSearchList.get(indexofvalue).GetTHealth(), SmallSearchList.get(indexofvalue).GetThorizontalIndex(),SmallSearchList.get(indexofvalue).GetTverticalIndex(),
 					distancevalue)); //everything is right except the distancevalue. Its not references so its generating a random one.
 		
-		
+			//CLEAR LISTS FOR NEXT ITERATION
 			SmallSearchList.clear();
 			TempDistances.clear();
 		}
-		PairedChar.PrintCollection(SmallFoundList);
+		//PairedChar.PrintCollection(SmallFoundList);
 	
 		return SmallFoundList;
 	}
 
 	static public int DistanceCalc (ArrayList<Character> array, String chosenName, String chosenName2) {
+		
+		//USING THE PYTHAGORAS THEORAM TO FIND THE SMALLEST DISTANCE. HORIZONTAL/VERTICAL REPRESENTING COORDINATES
 		int y =0; int x = 0; int y1 =0; int x1 =0; int Distance=0;
 
 		for (int i=0; i<array.size(); i++) {
 	
+			//COLLECTING AND INITIALISING RELEVANT VARIABLE
 			if (chosenName == array.get(i).GetName()) 
 			{ y = array.get(i).GethorizontalIndex(); x = array.get(i).GetverticalIndex(); }
 	
 			if (chosenName2 == array.get(i).GetName())
 			{ y1 = array.get(i).GethorizontalIndex(); x1 = array.get(i).GetverticalIndex();	}
 	
+			//PYTHAGORAS FORMULA CODED
 			int xes= (int) Math.abs(Math.pow((x1-x),2)); int yes= (int) Math.abs(Math.pow((y1-y),2));
 			Distance = (int) Math.abs(Math.sqrt(xes+yes));		
 		}
@@ -276,8 +290,11 @@ public static void main(String[] args) {
 	}
 
 	static public ArrayList<Character> MultipleTrainerCheck (ArrayList<Character> array) {
+		
+		//CREATING THIS LIST TO RETURN TRAINERS ONLY LIST
 		ArrayList<Character> TrainerList = new ArrayList<Character>();
 
+		//RUN THROUGH WHOLE LIST AND PICK OUT 'TRAINERS' AND ADD IT TO 'TRAINERLIST'
 		for (int i=0; i<array.size(); i++) {
 		
 			if (array.get(i).GetElement() == "Trainer") {
@@ -290,8 +307,11 @@ public static void main(String[] args) {
 	}
 
 	static public ArrayList<Character> MultipleKudomoncheck (ArrayList<Character> array) {
+		
+		//CREATING THIS LIST TO RETURN KUDOMON ONLY LIST
 		ArrayList<Character> KudomonList = new ArrayList<Character>();
 
+		//RUN THROUGH WHOLE LIST AND PICK OUT 'KUDOMON' AND ADD IT TO 'KUDOMONLIST'
 		for (int i=0; i<array.size(); i++) {
 		
 			if (array.get(i).GetElement() != "Trainer") {
@@ -304,6 +324,8 @@ public static void main(String[] args) {
 	}
 	
 	static public int UI(int aa,int bb)	{
+		
+		//GENERATE A RANDOM NUMBER BETWEEN TWO VALUES
 		Random ran = new Random();
 		int x = ran.nextInt(bb) + aa;	
 	return x;
