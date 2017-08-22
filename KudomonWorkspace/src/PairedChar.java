@@ -22,7 +22,7 @@ public class PairedChar {
 	{
 		//VIEW CHARACTER CLASS. VARAIBLES EXACTLY THE SAME, SEPARATED ACCORDING TO TRAINER (T) AND KUDOMON (K)
 		Tname=Tn; Telement=Te; Thealth=Thea; ThorizontalIndex=Thor; TverticalIndex=Tv; 
-		Kname=Kn; Telement=Ke; Khealth=Khea; KhorizontalIndex=Khor; KverticalIndex=Kv;
+		Kname=Kn; Kelement=Ke; Khealth=Khea; KhorizontalIndex=Khor; KverticalIndex=Kv;
 		Distance=d;
 	}
 	
@@ -85,7 +85,7 @@ public class PairedChar {
 	System.out.print(GetKHealth()); System.out.print(", ");
 	System.out.print(GetKhorizontalIndex()); System.out.print(":");
 	System.out.print(GetKverticalIndex()); 
-	System.out.print(" ,Distance: ");
+	System.out.print(", Distance: ");
 	System.out.print(GetDistance());
 	System.out.print(") ");
 	System.out.println();

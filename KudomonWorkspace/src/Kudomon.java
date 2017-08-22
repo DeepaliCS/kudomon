@@ -25,28 +25,43 @@ public static void main(String[] args) {
 	CharacterList.add(new Character ("Jo", "Trainer", defaultHealthForTrainers, UI(0, max), UI(0, max)));
 	CharacterList.add(new Character ("Benny", "Trainer", defaultHealthForTrainers, UI(0, max), UI(0, max)));
 	
+	System.out.println("***PART 1***");
 	//CALLING THE PRINT METHOD TO PRINT ALL INFO IN CHARACTER ARRAYLIST
 	Character.PrintCollection(CharacterList);
 	
-	//DISTANCE TEST BETWEEN FRED AND SOURBULB (UNCOMMENT TO TEST)
-	//System.out.println("Distance: "+DistanceCalc(CharacterList, "Fred", "Sourbulb"));
+		//DISTANCE TEST BETWEEN FRED AND SOURBULB (UNCOMMENT TO TEST)
+		//System.out.println("Distance: "+DistanceCalc(CharacterList, "Fred", "Sourbulb"));
 	
-	//OBJECT-ARRAYLIST CREATION TO SEPARATE KUDOMON AND TRAINERS
-	ArrayList<Character> TrainerList = new ArrayList<Character>();
-	ArrayList<Character> KudomonList = new ArrayList<Character>();
-	TrainerList= MultipleTrainerCheck(CharacterList);
-	KudomonList = MultipleKudomoncheck(CharacterList);
+		//OBJECT-ARRAYLIST CREATION TO SEPARATE KUDOMON AND TRAINERS
+		ArrayList<Character> TrainerList = new ArrayList<Character>();
+		ArrayList<Character> KudomonList = new ArrayList<Character>();
+		TrainerList= MultipleTrainerCheck(CharacterList);
+		KudomonList = MultipleKudomoncheck(CharacterList);
 
+	System.out.println("***PART 2***");
 	//0BJECT-ARRAYLIST TO COMBINE KUDOMON TO TRAINERS ACCORDING TO THEIR FIRST CLOSEST KUDOMON
 	ArrayList<PairedChar> CloseBy = new ArrayList<PairedChar>();
 	CloseBy = CloseList(TrainerList, KudomonList, CharacterList); 
+	PairedChar.PrintCollection(CloseBy);
 	
+	System.out.println("***PART 3***");
 	//CALLING THIS METHOD TO ADJUST KUDOMON COORDINATES SO TRAINERS HAVE THEIR TAILORED MAP TO CATCH THE KUDOMON
-	EnableMultipleCatches(CloseBy);
+	PairedChar.PrintCollection(EnableMultipleCatches(CloseBy));
 	
+	System.out.println("***PART 4***");
 	//CALLING THIS METHOD TO FOR A BATTLE
-	//HealthBattles(CharacterList, "Fred", "Chikapu");
+	String player1 = "Fred"; String player2 = "Chikapu"; 
+	ArrayList<Character> DisplayPlayers = new ArrayList<Character>();
+	int i = IndexFinder(CharacterList, player1);int j = IndexFinder(CharacterList, player2);
+	DisplayPlayers.add(new Character (CharacterList.get(i).GetName(),CharacterList.get(i).GetElement(),CharacterList.get(i).GetHealth(),CharacterList.get(i).GethorizontalIndex(), CharacterList.get(i).GetverticalIndex()));
+	DisplayPlayers.add(new Character (CharacterList.get(j).GetName(), CharacterList.get(j).GetElement(), CharacterList.get(j).GetHealth(), CharacterList.get(j).GethorizontalIndex(), CharacterList.get(j).GetverticalIndex())); 
+	Character.PrintCollection(DisplayPlayers);
+	System.out.println(HealthBattles(CharacterList, player1, player2));
+	System.out.println("inmain--");
+	
+	
 }
+
 
 	//+++METHODS+++
 
@@ -68,8 +83,8 @@ public static void main(String[] args) {
 		int player1score=0;
 		int player2score=0;
 		
-		//GETTING THE ELEMENT INFO FROM THE CHARACTERLIST OF 'CHOSENNAME' (IF ITS A TRAINER OR A KUDOMON)
-		int indexofelement= BattleAgainst.indexOf(chosenName);
+		//GETTING THE ELEMENT INFO FROM THE CHARACTERLIST OF 'CHOSENNAME' (IF ITS A TRAINER OR A KUDOMON)		
+		int indexofelement= IndexFinder (BattleAgainst, chosenName);		
 		String CheckElement =BattleAgainst.get(indexofelement).GetElement();	
 	
 		
@@ -77,34 +92,34 @@ public static void main(String[] args) {
 			if (CheckElement == "Trainer") {
 			
 				player1=chosenName; 
-				indexofelement= BattleAgainst.indexOf(chosenName);
+				indexofelement= IndexFinder (BattleAgainst, chosenName);	
 				ElementName =BattleAgainst.get(indexofelement).GetElement();
 				setHarm1 = SetHarmAssignment(ElementName);
 				player1score = BattleAgainst.get(indexofelement).GetHealth();
 			
 				player2=chosenName2;
-				indexofelement= BattleAgainst.indexOf(chosenName2);
+				indexofelement= IndexFinder (BattleAgainst, chosenName);	
 				ElementName =BattleAgainst.get(indexofelement).GetElement();
 				setHarm2 = SetHarmAssignment(ElementName);
 				player2score= BattleAgainst.get(indexofelement).GetHealth();
 			
 			}
-		
+System.out.println("afterfirstif--");	
 			//GETTING THE ELEMENT INFO FROM THE CHARACTERLIST OF 'CHOSENNAME2' (IF ITS A TRAINER OR A KUDOMON)
-			indexofelement= BattleAgainst.indexOf(chosenName2);
+			indexofelement= IndexFinder (BattleAgainst, chosenName);	
 			CheckElement =BattleAgainst.get(indexofelement).GetElement();
 		
 			//IF 'CHOSENNAME2' IS A TRAINER THEN HUMAN PLAYS FIRST
 			if (CheckElement == "Trainer") {
 			
 				player1=chosenName2; 
-				indexofelement= BattleAgainst.indexOf(chosenName2);
+				indexofelement= IndexFinder (BattleAgainst, chosenName);	
 				ElementName =BattleAgainst.get(indexofelement).GetElement();
 				setHarm2 = SetHarmAssignment(ElementName);
 				player2score = BattleAgainst.get(indexofelement).GetHealth();
 			
 				player2=chosenName;
-				indexofelement= BattleAgainst.indexOf(chosenName);
+				indexofelement= IndexFinder (BattleAgainst, chosenName);	
 				ElementName =BattleAgainst.get(indexofelement).GetElement();
 				setHarm1 = SetHarmAssignment(ElementName);
 				player1score= BattleAgainst.get(indexofelement).GetHealth();
@@ -114,13 +129,13 @@ public static void main(String[] args) {
 			if (Switch == 1) {
 			
 				player1=chosenName;	
-				indexofelement= BattleAgainst.indexOf(chosenName);
+				indexofelement= IndexFinder (BattleAgainst, chosenName);	
 				ElementName =BattleAgainst.get(indexofelement).GetElement();
 				setHarm1 = SetHarmAssignment(ElementName);
 				player1score = BattleAgainst.get(indexofelement).GetHealth();
 			
 				player2=chosenName2;
-				indexofelement= BattleAgainst.indexOf(chosenName2);
+				indexofelement= IndexFinder (BattleAgainst, chosenName);	
 				ElementName =BattleAgainst.get(indexofelement).GetElement();
 				setHarm2 = SetHarmAssignment(ElementName);
 				player2score= BattleAgainst.get(indexofelement).GetHealth();
@@ -128,19 +143,20 @@ public static void main(String[] args) {
 				else {
 				
 					player1=chosenName2; 
-					indexofelement= BattleAgainst.indexOf(chosenName2);
+					indexofelement= IndexFinder (BattleAgainst, chosenName);	
 					ElementName =BattleAgainst.get(indexofelement).GetElement();
 					setHarm1 = SetHarmAssignment(ElementName);
 					player1score = BattleAgainst.get(indexofelement).GetHealth();
 				
 					player2=chosenName;
-					indexofelement= BattleAgainst.indexOf(chosenName);
+					indexofelement= IndexFinder (BattleAgainst, chosenName);	
 					ElementName =BattleAgainst.get(indexofelement).GetElement();
 					setHarm2 = SetHarmAssignment(ElementName);
 					player2score= BattleAgainst.get(indexofelement).GetHealth();
 				
 				}
 	
+System.out.println("afterallifs--");
 			//SETTING THE MOTION FOR THE ACTUAL BATTLE
 			String win = "none";
 			while (win == "none") {
@@ -153,8 +169,8 @@ public static void main(String[] args) {
 			
 			
 				//RETURNING WINNERS!
-				if (player1score ==0) {	return "Winner is " + player1; }
-				else if (player2score ==0) { return "Winner is " + player2;	}
+				if (player1score <=0) {	win = "win"; return "Winner is " + player1; }
+				else if (player2score <=0) { win = "win"; return "Winner is " + player2;	}
 		}
 		return "";
 	}
@@ -194,15 +210,15 @@ public static void main(String[] args) {
 				change++;
 	
 				NewList.add(new PairedChar (
-					(coorChange .get(i).GetKName()), coorChange .get(i).GetKelement(), coorChange .get(i).GetKHealth(), coorChange .get(i).GetKhorizontalIndex(), (coorChange .get(i).GetKverticalIndex()+1), 
-					coorChange .get(i).GetTName(), coorChange .get(i).GetTelement(), coorChange .get(i).GetTHealth(), coorChange .get(i).GetThorizontalIndex(),coorChange .get(i).GetTverticalIndex(),
+					(coorChange .get(i).GetTName()), coorChange .get(i).GetTelement(), coorChange .get(i).GetTHealth(), coorChange .get(i).GetThorizontalIndex(), (coorChange .get(i).GetTverticalIndex()), 
+					coorChange .get(i).GetKName(), coorChange .get(i).GetKelement(), coorChange .get(i).GetKHealth(), coorChange .get(i).GetKhorizontalIndex(),coorChange .get(i).GetKverticalIndex()+1,
 					coorChange.get(i).GetDistance()));
 		
 			}
 			else {
 				NewList.add(new PairedChar (
-						(coorChange .get(i).GetKName()), coorChange .get(i).GetKelement(), coorChange .get(i).GetKHealth(), (coorChange.get(i).GetKhorizontalIndex()+1), (coorChange .get(i).GetKverticalIndex()), 
-						coorChange .get(i).GetTName(), coorChange .get(i).GetTelement(), coorChange .get(i).GetTHealth(), coorChange .get(i).GetThorizontalIndex(),coorChange .get(i).GetTverticalIndex(),
+						(coorChange .get(i).GetTName()), coorChange .get(i).GetTelement(), coorChange .get(i).GetTHealth(), (coorChange.get(i).GetThorizontalIndex()), (coorChange .get(i).GetTverticalIndex()), 
+						coorChange .get(i).GetKName(), coorChange .get(i).GetKelement(), coorChange .get(i).GetKHealth(), coorChange .get(i).GetKhorizontalIndex()+1,coorChange .get(i).GetKverticalIndex(),
 						coorChange.get(i).GetDistance()));
 			}
 		}
@@ -330,6 +346,18 @@ public static void main(String[] args) {
 		int x = ran.nextInt(bb) + aa;	
 	return x;
 	}	
+	
+	//METHOD IS USED TO FIND THE INDEX OF A NAME (USED IN HEALTH BATTLES)
+	static public int IndexFinder(ArrayList<Character> array, String name)	{
+		
+		for (int i = 0; i < array.size(); i++) 		{
+			   if (array.get(i).GetName() == name) {
+			    //System.out.println(i);
+				return i;
+			  }
+		}
+		return 0;
+	}
 }
 
 
