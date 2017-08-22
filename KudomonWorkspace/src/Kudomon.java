@@ -8,13 +8,12 @@ import java.util.Random;
 public class Kudomon {
 public static void main(String[] args) {
 
-
-	//Scanner to input distance, Set a flow of game
-	//Set coordinates so multiple people can access it
-	//Health battle
-	
+	//MAX IS ABOUT HOW BIG THE CANVAS IS TO IDENTIFY LOCATION
 	int max = 50;
+	//DEFAULT TRAINER HEALTH (HUMANS)
 	int defaultHealthForTrainers = 10;
+	
+	//OBJECT ARRAYLIST (CHARACTER - KUDOMON/TRAINER). VIEW CHARACTER CLASS TO VIEW FIELDS
 	ArrayList<Character> CharacterList = new ArrayList<Character>();
 	CharacterList.add(new Character ("Sourbulb", "grass", UI(0, max), UI(0, max),UI(0, max)));
 	CharacterList.add(new Character ("Mancharred", "fire", UI(0, max), UI(0, max), UI(0, max)));
@@ -26,237 +25,283 @@ public static void main(String[] args) {
 	CharacterList.add(new Character ("Jo", "Trainer", defaultHealthForTrainers, UI(0, max), UI(0, max)));
 	CharacterList.add(new Character ("Benny", "Trainer", defaultHealthForTrainers, UI(0, max), UI(0, max)));
 	
+	//CALLING THE PRINT METHOD TO PRINT ALL INFO IN CHARACTER ARRAYLIST
 	Character.PrintCollection(CharacterList);
-	//System.out.println("-->"+DistanceCalc(CharacterList, "Fred", "Sourbulb"));
+	
+	//DISTANCE TEST BETWEEN FRED AND SOURBULB
+	//System.out.println("Distance: "+DistanceCalc(CharacterList, "Fred", "Sourbulb"));
+	
+	//OBJECT-ARRAYLIST CREATION TO SEPARATE KUDOMON AND TRAINERS
 	ArrayList<Character> TrainerList = new ArrayList<Character>();
 	ArrayList<Character> KudomonList = new ArrayList<Character>();
 	TrainerList= MultipleTrainerCheck(CharacterList);
 	KudomonList = MultipleKudomoncheck(CharacterList);
 
+	//0BJECT-ARRAYLIST TO COMBINE KUDOMON TO TRAINERS ACCORDING TO THEIR FIRST CLOSEST KUDOMON
 	ArrayList<PairedChar> CloseBy = new ArrayList<PairedChar>();
 	CloseBy = CloseList(TrainerList, KudomonList, CharacterList); 
 	
+	//CALLING THIS METHOD TO ADJUST KUDOMON COORDINATES SO TRAINERS HAVE THEIR TAILORED MAP TO CATCH THE KUDOMON
 	EnableMultipleCatches(CloseBy);
 	
-	HealthBattles(CharacterList, KudomonList, "Fred", "Chikapu");
+	//CALLING THIS METHOD TO FOR A BATTLE
+	HealthBattles(CharacterList, "Fred", "Chikapu");
 }
 
-static public void HealthBattles (ArrayList<Character> BattleAgainst, ArrayList<Character> KudomonList, String chosenName, String chosenName2) {
-	int KudomonListValue = KudomonList.size();
-	String player1 = "";
-	String player2 = "";
-	int Switch = UI(0,2);
-	int setHarm1 =0;
-	int setHarm2 =0;
-	String ElementName = "Nothing";
+	//+++METHODS+++
+
+	static public String HealthBattles (ArrayList<Character> BattleAgainst, String chosenName, String chosenName2) {
 	
-	//Getting info if the character is a trainer or kudomon
-	int indexofelement= BattleAgainst.indexOf(chosenName);
-	String CheckElement =BattleAgainst.get(indexofelement).GetElement();	
+		//PLAYERS WILL BE DECIDED BY WHAT THE ELEMENT IS (KUDOMON OR TRAINER)
+		String player1 = "";
+		String player2 = "";
 	
-	for (int i=0; i<BattleAgainst.size(); i++) {
+		//THIS IS USED TO RANDOMLY SELECT THE FIRST PLAYER BETWEEN KUDOMON
+		int Switch = UI(0,2);
+	
+		//THIS WILL BE THE AMOUNT OF AFFLICTION THE KUDOMON WILL GIVE TO EACH OTHER 
+		int setHarm1 =0;
+		int setHarm2 =0;
 		
-		if (CheckElement == "Trainer") {
+		//USED TO HELP COLLECT THE CORRESPONDING AFFLICTION TO THE ELEMENT. E.G-FIRE=50.
+		String ElementName = "";
+		int player1score=0;
+		int player2score=0;
+		
+		//GETTING THE ELEMENT INFO FROM THE CHARACTERLIST OF 'CHOSENNAME' (IF ITS A TRAINER OR A KUDOMON)
+		int indexofelement= BattleAgainst.indexOf(chosenName);
+		String CheckElement =BattleAgainst.get(indexofelement).GetElement();	
+	
+		
+		//IF 'CHOSENNAME' IS A TRAINER THEN HUMAN PLAYS FIRST
+			if (CheckElement == "Trainer") {
 			
-			player1=chosenName; player2=chosenName2;
-			
-			indexofelement= BattleAgainst.indexOf(chosenName);
-			ElementName =BattleAgainst.get(indexofelement).GetElement();
-			setHarm1 = SetHarmAssignment(ElementName);
-			
-			indexofelement= BattleAgainst.indexOf(chosenName2);
-			ElementName =BattleAgainst.get(indexofelement).GetElement();
-			setHarm2 = SetHarmAssignment(ElementName);
-			
-		}
-			else  if (Switch == 1) {
-				
-				player1=chosenName;	player2=chosenName2;
-				
+				player1=chosenName; 
 				indexofelement= BattleAgainst.indexOf(chosenName);
 				ElementName =BattleAgainst.get(indexofelement).GetElement();
 				setHarm1 = SetHarmAssignment(ElementName);
-				
+				player1score = BattleAgainst.get(indexofelement).GetHealth();
+			
+				player2=chosenName2;
 				indexofelement= BattleAgainst.indexOf(chosenName2);
 				ElementName =BattleAgainst.get(indexofelement).GetElement();
 				setHarm2 = SetHarmAssignment(ElementName);
+				player2score= BattleAgainst.get(indexofelement).GetHealth();
+			
+			}
+		
+			//GETTING THE ELEMENT INFO FROM THE CHARACTERLIST OF 'CHOSENNAME2' (IF ITS A TRAINER OR A KUDOMON)
+			indexofelement= BattleAgainst.indexOf(chosenName2);
+			CheckElement =BattleAgainst.get(indexofelement).GetElement();
+		
+			//IF 'CHOSENNAME2' IS A TRAINER THEN HUMAN PLAYS FIRST
+			if (CheckElement == "Trainer") {
+			
+				player1=chosenName2; 
+				indexofelement= BattleAgainst.indexOf(chosenName2);
+				ElementName =BattleAgainst.get(indexofelement).GetElement();
+				setHarm2 = SetHarmAssignment(ElementName);
+				player2score = BattleAgainst.get(indexofelement).GetHealth();
+			
+				player2=chosenName;
+				indexofelement= BattleAgainst.indexOf(chosenName);
+				ElementName =BattleAgainst.get(indexofelement).GetElement();
+				setHarm1 = SetHarmAssignment(ElementName);
+				player1score= BattleAgainst.get(indexofelement).GetHealth();
+			}
+		
+			//IF NONE OF THE GIVEN NAMES ARE TRAINERS THEN A RANDOM KUDOMON IS CHOSEN TO BE PLAYER 1 AND 2
+			if (Switch == 1) {
+			
+				player1=chosenName;	
+				indexofelement= BattleAgainst.indexOf(chosenName);
+				ElementName =BattleAgainst.get(indexofelement).GetElement();
+				setHarm1 = SetHarmAssignment(ElementName);
+				player1score = BattleAgainst.get(indexofelement).GetHealth();
+			
+				player2=chosenName2;
+				indexofelement= BattleAgainst.indexOf(chosenName2);
+				ElementName =BattleAgainst.get(indexofelement).GetElement();
+				setHarm2 = SetHarmAssignment(ElementName);
+				player2score= BattleAgainst.get(indexofelement).GetHealth();
 			}
 				else {
-					
-					player1=chosenName2; player2=chosenName;
-					
+				
+					player1=chosenName2; 
 					indexofelement= BattleAgainst.indexOf(chosenName2);
 					ElementName =BattleAgainst.get(indexofelement).GetElement();
 					setHarm1 = SetHarmAssignment(ElementName);
-					
+					player1score = BattleAgainst.get(indexofelement).GetHealth();
+				
+					player2=chosenName;
 					indexofelement= BattleAgainst.indexOf(chosenName);
 					ElementName =BattleAgainst.get(indexofelement).GetElement();
 					setHarm2 = SetHarmAssignment(ElementName);
-					
+					player2score= BattleAgainst.get(indexofelement).GetHealth();
+				
 				}
-		}
-		
-	//Now youve got the player names and their harmrates
-	//You need to get the game. By doing a for loop. 
-	//How long does the for loop go?
-	//OR You can do a while loop...until a win is decla
-		
-
-		
-		
-		
-		//Set motion for health game.
-		
-}
-
-static public int SetHarmAssignment (String ElementName) {
 	
-	int setHarm =0;
-	String Elementname = ElementName;
-	
-	switch (Elementname) {
-	case "water" : setHarm = 10;
-	break;
-	case "electric" : setHarm = 20;
-	break;
-	case "rock" : setHarm = 30;
-	break;
-	case "grass" : setHarm = 40;
-	break;
-	case "fire" : setHarm = 50;
-	break;
-	case "Trainer" : setHarm = UI(10,50);
-	break;
-	}
-	return setHarm;
-	
-}
-
-static public ArrayList<PairedChar> EnableMultipleCatches (ArrayList<PairedChar> coorChange ) {
-	
-	ArrayList<PairedChar> NewList = new ArrayList<PairedChar>();
-	
-	System.out.println("Cooor "+coorChange.size());
-	
-	for (int i=0; i < coorChange.size(); i++) {
-		
-		int Switch = UI(0,2);
-		
-		if (Switch ==1) {
-		int change = coorChange.get(i).GetKverticalIndex();
-		change++;
-	
-		NewList.add(new PairedChar (
-		(coorChange .get(i).GetKName()), coorChange .get(i).GetKelement(), coorChange .get(i).GetKHealth(), coorChange .get(i).GetKhorizontalIndex(), (coorChange .get(i).GetKverticalIndex()+1), 
-		coorChange .get(i).GetTName(), coorChange .get(i).GetTelement(), coorChange .get(i).GetTHealth(), coorChange .get(i).GetThorizontalIndex(),coorChange .get(i).GetTverticalIndex(),
-		coorChange.get(i).GetDistance()));
-		
-		}
-		else {
-			NewList.add(new PairedChar (
-			(coorChange .get(i).GetKName()), coorChange .get(i).GetKelement(), coorChange .get(i).GetKHealth(), (coorChange.get(i).GetKhorizontalIndex()+1), (coorChange .get(i).GetKverticalIndex()), 
-			coorChange .get(i).GetTName(), coorChange .get(i).GetTelement(), coorChange .get(i).GetTHealth(), coorChange .get(i).GetThorizontalIndex(),coorChange .get(i).GetTverticalIndex(),
-			coorChange.get(i).GetDistance()));
-		}
-	}
-	
-	//PairedChar.PrintCollection(coorChange); System.out.println();
-	//PairedChar.PrintCollection(NewList);
-	
-return NewList;
-	
-}
-static public ArrayList<PairedChar> CloseList (ArrayList<Character> Trainers, ArrayList<Character> Kudomons, ArrayList<Character> AllList) {
-
-	
-	int smallest =1000;
-	int distancevalue=0;
-	int num=0;
-	
-	//ArrayList<Integer> DistanceList = new ArrayList<Integer>();
-	ArrayList<PairedChar> SmallSearchList = new ArrayList<PairedChar>();
-	ArrayList<Integer> TempDistances = new ArrayList<Integer>();
-	ArrayList<PairedChar> SmallFoundList = new ArrayList<PairedChar>();
-	
-	for (int i =0; i < Trainers.size(); i++) {
-		
-		for (int j =0; j< Kudomons.size(); j++) {
+			//SETTING THE MOTION FOR THE ACTUAL BATTLE
+			String win = "none";
+			while (win == "none") {
 			
-			distancevalue= DistanceCalc(AllList, Kudomons.get(j).GetName(), Trainers.get(i).GetName());			
+				//PLAYER 1 INFLICTS HARM FIRST, UPDATES THE HEALTH SCORE
+				player2score= setHarm1-player2score;
 			
-			SmallSearchList.add(new PairedChar 
-			(Kudomons.get(j).GetName(), Kudomons.get(j).GetElement(), Kudomons.get(j).GetHealth(), Kudomons.get(j).GethorizontalIndex(), Kudomons.get(j).GetverticalIndex(), 
-			Trainers.get(i).GetName(), Trainers .get(i).GetElement(), Trainers.get(i).GetHealth(), Trainers.get(i).GethorizontalIndex(),Trainers.get(i).GetverticalIndex(),
-			distancevalue));
-			TempDistances.add(new Integer (distancevalue));
+				//PLAYER 2 INFLICTS HARM SECOND, UPDATES THE HEALTH SCORE
+				player1score=setHarm2-player1score;
 			
+			
+				//RETURNING WINNERS!
+				if (player1score ==0) {	return "Winner is " + player1; }
+				else if (player2score ==0) { return "Winner is " + player2;	}
 		}
-		
-		PairedChar.PrintCollection(SmallSearchList);
-		num = Collections.min(TempDistances);
-		System.out.println("--> "+num);
-		
-		
-		int indexofvalue= TempDistances.indexOf(Collections.min(TempDistances));
-		System.out.println(">>>"+indexofvalue);
-		SmallFoundList.add(new PairedChar (
-				(SmallSearchList.get(indexofvalue).GetKName()), SmallSearchList.get(indexofvalue).GetKelement(), SmallSearchList.get(indexofvalue).GetKHealth(), SmallSearchList.get(indexofvalue).GetKhorizontalIndex(), SmallSearchList.get(indexofvalue).GetKverticalIndex(), 
-				SmallSearchList.get(indexofvalue).GetTName(), SmallSearchList .get(indexofvalue).GetTelement(), SmallSearchList.get(indexofvalue).GetTHealth(), SmallSearchList.get(indexofvalue).GetThorizontalIndex(),SmallSearchList.get(indexofvalue).GetTverticalIndex(),
-				distancevalue)); //everything is right except the distancevalue. Its not references so its generating a random one.
-		
-		
-		SmallSearchList.clear();
-		TempDistances.clear();
+		return "";
 	}
-	PairedChar.PrintCollection(SmallFoundList);
-	
-	return SmallFoundList;
-}
 
-static public int DistanceCalc (ArrayList<Character> array, String chosenName, String chosenName2) {
-int y =0; int x = 0; int y1 =0; int x1 =0; int Distance=0;
-
-for (int i=0; i<array.size(); i++) {
 	
-	if (chosenName == array.get(i).GetName()) 
-	{ y = array.get(i).GethorizontalIndex(); x = array.get(i).GetverticalIndex(); }
+	static public int SetHarmAssignment (String ElementName) {
 	
-	if (chosenName2 == array.get(i).GetName())
-	{ y1 = array.get(i).GethorizontalIndex(); x1 = array.get(i).GetverticalIndex();	}
+		int setHarm =0;
+		String Elementname = ElementName;
 	
-	int xes= (int) Math.abs(Math.pow((x1-x),2)); int yes= (int) Math.abs(Math.pow((y1-y),2));
-	Distance = (int) Math.abs(Math.sqrt(xes+yes));		
-	}
-return Distance;
-}
-
-static public ArrayList<Character> MultipleTrainerCheck (ArrayList<Character> array) {
-ArrayList<Character> TrainerList = new ArrayList<Character>();
-
-	for (int i=0; i<array.size(); i++) {
+		switch (Elementname) {
+		case "water" : setHarm = 10; break;
+		case "electric" : setHarm = 20; break;
+		case "rock" : setHarm = 30; break;
+		case "grass" : setHarm = 40; break;
+		case "fire" : setHarm = 50; break;
+		case "Trainer" : setHarm = UI(10,50); break;
 		
-		if (array.get(i).GetElement() == "Trainer") {
-			TrainerList.add(array.get(i)); 
 		}
-	}
-	//Character.PrintCollection(TrainerList); 
+		return setHarm;
 	
-	return TrainerList;
-}
+	}
 
-static public ArrayList<Character> MultipleKudomoncheck (ArrayList<Character> array) {
-ArrayList<Character> KudomonList = new ArrayList<Character>();
-
-	for (int i=0; i<array.size(); i++) {
+	static public ArrayList<PairedChar> EnableMultipleCatches (ArrayList<PairedChar> coorChange ) {
+	
+		ArrayList<PairedChar> NewList = new ArrayList<PairedChar>();
+	
+		System.out.println("Cooor "+coorChange.size());
+	
+		for (int i=0; i < coorChange.size(); i++) {
 		
-		if (array.get(i).GetElement() != "Trainer") {
-			KudomonList.add(array.get(i)); 
-		}
-	}
-	//Character.PrintCollection(KudomonList); 
+			int Switch = UI(0,2);
+		
+			if (Switch ==1) {
+				int change = coorChange.get(i).GetKverticalIndex();
+				change++;
 	
-	return KudomonList;
-}
+				NewList.add(new PairedChar (
+					(coorChange .get(i).GetKName()), coorChange .get(i).GetKelement(), coorChange .get(i).GetKHealth(), coorChange .get(i).GetKhorizontalIndex(), (coorChange .get(i).GetKverticalIndex()+1), 
+					coorChange .get(i).GetTName(), coorChange .get(i).GetTelement(), coorChange .get(i).GetTHealth(), coorChange .get(i).GetThorizontalIndex(),coorChange .get(i).GetTverticalIndex(),
+					coorChange.get(i).GetDistance()));
+		
+			}
+			else {
+				NewList.add(new PairedChar (
+						(coorChange .get(i).GetKName()), coorChange .get(i).GetKelement(), coorChange .get(i).GetKHealth(), (coorChange.get(i).GetKhorizontalIndex()+1), (coorChange .get(i).GetKverticalIndex()), 
+						coorChange .get(i).GetTName(), coorChange .get(i).GetTelement(), coorChange .get(i).GetTHealth(), coorChange .get(i).GetThorizontalIndex(),coorChange .get(i).GetTverticalIndex(),
+						coorChange.get(i).GetDistance()));
+			}
+		}
+	
+		//PairedChar.PrintCollection(coorChange); System.out.println();
+		//PairedChar.PrintCollection(NewList);
+	
+		return NewList;
+	
+	}
+	static public ArrayList<PairedChar> CloseList (ArrayList<Character> Trainers, ArrayList<Character> Kudomons, ArrayList<Character> AllList) {
+
+		int smallest =1000;
+		int distancevalue=0;
+		int num=0;
+	
+		//ArrayList<Integer> DistanceList = new ArrayList<Integer>();
+		ArrayList<PairedChar> SmallSearchList = new ArrayList<PairedChar>();
+		ArrayList<Integer> TempDistances = new ArrayList<Integer>();
+		ArrayList<PairedChar> SmallFoundList = new ArrayList<PairedChar>();
+	
+		for (int i =0; i < Trainers.size(); i++) {
+		
+			for (int j =0; j< Kudomons.size(); j++) {
+			
+				distancevalue= DistanceCalc(AllList, Kudomons.get(j).GetName(), Trainers.get(i).GetName());			
+			
+				SmallSearchList.add(new PairedChar 
+						(Kudomons.get(j).GetName(), Kudomons.get(j).GetElement(), Kudomons.get(j).GetHealth(), Kudomons.get(j).GethorizontalIndex(), Kudomons.get(j).GetverticalIndex(), 
+						Trainers.get(i).GetName(), Trainers .get(i).GetElement(), Trainers.get(i).GetHealth(), Trainers.get(i).GethorizontalIndex(),Trainers.get(i).GetverticalIndex(),
+						distancevalue));
+						TempDistances.add(new Integer (distancevalue));
+			
+			}
+		
+			PairedChar.PrintCollection(SmallSearchList);
+			num = Collections.min(TempDistances);
+			System.out.println("--> "+num);
+		
+		
+			int indexofvalue= TempDistances.indexOf(Collections.min(TempDistances));
+			System.out.println(">>>"+indexofvalue);
+			SmallFoundList.add(new PairedChar (
+					(SmallSearchList.get(indexofvalue).GetKName()), SmallSearchList.get(indexofvalue).GetKelement(), SmallSearchList.get(indexofvalue).GetKHealth(), SmallSearchList.get(indexofvalue).GetKhorizontalIndex(), SmallSearchList.get(indexofvalue).GetKverticalIndex(), 
+					SmallSearchList.get(indexofvalue).GetTName(), SmallSearchList .get(indexofvalue).GetTelement(), SmallSearchList.get(indexofvalue).GetTHealth(), SmallSearchList.get(indexofvalue).GetThorizontalIndex(),SmallSearchList.get(indexofvalue).GetTverticalIndex(),
+					distancevalue)); //everything is right except the distancevalue. Its not references so its generating a random one.
+		
+		
+			SmallSearchList.clear();
+			TempDistances.clear();
+		}
+		PairedChar.PrintCollection(SmallFoundList);
+	
+		return SmallFoundList;
+	}
+
+	static public int DistanceCalc (ArrayList<Character> array, String chosenName, String chosenName2) {
+		int y =0; int x = 0; int y1 =0; int x1 =0; int Distance=0;
+
+		for (int i=0; i<array.size(); i++) {
+	
+			if (chosenName == array.get(i).GetName()) 
+			{ y = array.get(i).GethorizontalIndex(); x = array.get(i).GetverticalIndex(); }
+	
+			if (chosenName2 == array.get(i).GetName())
+			{ y1 = array.get(i).GethorizontalIndex(); x1 = array.get(i).GetverticalIndex();	}
+	
+			int xes= (int) Math.abs(Math.pow((x1-x),2)); int yes= (int) Math.abs(Math.pow((y1-y),2));
+			Distance = (int) Math.abs(Math.sqrt(xes+yes));		
+		}
+		return Distance;
+	}
+
+	static public ArrayList<Character> MultipleTrainerCheck (ArrayList<Character> array) {
+		ArrayList<Character> TrainerList = new ArrayList<Character>();
+
+		for (int i=0; i<array.size(); i++) {
+		
+			if (array.get(i).GetElement() == "Trainer") {
+				TrainerList.add(array.get(i)); 
+			}
+		}
+		//Character.PrintCollection(TrainerList); 
+	
+		return TrainerList;
+	}
+
+	static public ArrayList<Character> MultipleKudomoncheck (ArrayList<Character> array) {
+		ArrayList<Character> KudomonList = new ArrayList<Character>();
+
+		for (int i=0; i<array.size(); i++) {
+		
+			if (array.get(i).GetElement() != "Trainer") {
+				KudomonList.add(array.get(i)); 
+			}
+		}
+		//Character.PrintCollection(KudomonList); 
+	
+		return KudomonList;
+	}
 	
 	static public int UI(int aa,int bb)	{
 		Random ran = new Random();

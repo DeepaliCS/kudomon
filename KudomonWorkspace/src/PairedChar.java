@@ -96,7 +96,7 @@ public class PairedChar {
 	System.out.print(GetKHealth()); System.out.print(", ");
 	System.out.print(GetKhorizontalIndex()); System.out.print(":");
 	System.out.print(GetKverticalIndex()); 
-	System.out.print(" Distance ");
+	System.out.print(" ,Distance: ");
 	System.out.print(GetDistance());
 	System.out.print(") ");
 	System.out.println();
