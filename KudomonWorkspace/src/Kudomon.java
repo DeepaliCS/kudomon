@@ -56,8 +56,7 @@ public static void main(String[] args) {
 	DisplayPlayers.add(new Character (CharacterList.get(i).GetName(),CharacterList.get(i).GetElement(),CharacterList.get(i).GetHealth(),CharacterList.get(i).GethorizontalIndex(), CharacterList.get(i).GetverticalIndex()));
 	DisplayPlayers.add(new Character (CharacterList.get(j).GetName(), CharacterList.get(j).GetElement(), CharacterList.get(j).GetHealth(), CharacterList.get(j).GethorizontalIndex(), CharacterList.get(j).GetverticalIndex())); 
 	Character.PrintCollection(DisplayPlayers);
-	System.out.println(HealthBattles(CharacterList, player1, player2));
-	System.out.println("inmain--");
+	HealthBattles(CharacterList, player1, player2);
 	
 	
 }
@@ -104,7 +103,7 @@ public static void main(String[] args) {
 				player2score= BattleAgainst.get(indexofelement).GetHealth();
 			
 			}
-System.out.println("afterfirstif--");	
+			
 			//GETTING THE ELEMENT INFO FROM THE CHARACTERLIST OF 'CHOSENNAME2' (IF ITS A TRAINER OR A KUDOMON)
 			indexofelement= IndexFinder (BattleAgainst, chosenName);	
 			CheckElement =BattleAgainst.get(indexofelement).GetElement();
@@ -156,23 +155,30 @@ System.out.println("afterfirstif--");
 				
 				}
 	
-System.out.println("afterallifs--");
+
 			//SETTING THE MOTION FOR THE ACTUAL BATTLE
-			String win = "none";
-			while (win == "none") {
+			boolean win = false;
+			while ((player1score > 0) && (player2score >0)) {
 			
 				//PLAYER 1 INFLICTS HARM FIRST, UPDATES THE HEALTH SCORE
-				player2score= setHarm1-player2score;
+				player2score= player2score-setHarm1;
 			
 				//PLAYER 2 INFLICTS HARM SECOND, UPDATES THE HEALTH SCORE
-				player1score=setHarm2-player1score;
-			
-			
+				player1score=player1score-setHarm2;
+				
 				//RETURNING WINNERS!
-				if (player1score <=0) {	win = "win"; return "Winner is " + player1; }
-				else if (player2score <=0) { win = "win"; return "Winner is " + player2;	}
+				if (player1score <=0) {	win = true; return "Winner is " + player1; }
+				else if (player2score <=0) { win = true; return "Winner is " + player2;	}
+				else {return "nobody won!"; }
+				
 		}
-		return "";
+			System.out.println(player1score); System.out.println(player2score);
+			
+			return "--";
+			
+
+			
+		
 	}
 
 	
@@ -234,7 +240,7 @@ System.out.println("afterallifs--");
 		int distancevalue=0;
 		int num=0;
 		
-		//TWO OBJECT-ARRAYLIST. ONE TO STORE ALL SMALL DISTANCED KUDOMON AND OTHER TO STORE SELECTED DETAILS AND RETURN <<DOES THIS MAKE SENSE? LOL
+		//TWO OBJECT-ARRAYLIST. ONE TO STORE ALL SMALL DISTANCED KUDOMON AND OTHER TO STORE SELECTED DETAILS AND RETURN
 		ArrayList<PairedChar> SmallSearchList = new ArrayList<PairedChar>();
 		ArrayList<PairedChar> SmallFoundList = new ArrayList<PairedChar>();
 		
