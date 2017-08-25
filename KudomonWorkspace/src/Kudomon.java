@@ -61,126 +61,81 @@ public static void main(String[] args) {
 	
 }
 
-
 	//+++METHODS+++
 
-	static public String HealthBattles (ArrayList<Character> BattleAgainst, String chosenName, String chosenName2) {
+	static public void HealthBattles (ArrayList<Character> BattleAgainst, String chosenName, String chosenName2) {
 	
-		//PLAYERS WILL BE DECIDED BY WHAT THE ELEMENT IS (KUDOMON OR TRAINER)
+		
+		//PLAYERS WILL BE DECIDED BY WHAT THE ELEMENT IS (E.G-KUDOMON OR TRAINER)
 		String player1 = "";
 		String player2 = "";
 	
 		//THIS IS USED TO RANDOMLY SELECT THE FIRST PLAYER BETWEEN KUDOMON
 		int Switch = UI(0,2);
 	
-		//THIS WILL BE THE AMOUNT OF AFFLICTION THE KUDOMON WILL GIVE TO EACH OTHER 
-		int setHarm1 =0;
-		int setHarm2 =0;
-		
-		//USED TO HELP COLLECT THE CORRESPONDING AFFLICTION TO THE ELEMENT. E.G-FIRE=50.
-		String ElementName = "";
-		int player1score=0;
-		int player2score=0;
 		
 		//GETTING THE ELEMENT INFO FROM THE CHARACTERLIST OF 'CHOSENNAME' (IF ITS A TRAINER OR A KUDOMON)		
 		int indexofelement= IndexFinder (BattleAgainst, chosenName);		
-		String CheckElement =BattleAgainst.get(indexofelement).GetElement();	
-	
+		String CheckElement =BattleAgainst.get(indexofelement).GetElement();
+		String ElementName =BattleAgainst.get(indexofelement).GetElement();
+		int setHarm1 = SetHarmAssignment(ElementName);
+		int player1score = BattleAgainst.get(indexofelement).GetHealth();
 		
-		//IF 'CHOSENNAME' IS A TRAINER THEN HUMAN PLAYS FIRST
-			if (CheckElement == "Trainer") {
-			
-				player1=chosenName; 
-				indexofelement= IndexFinder (BattleAgainst, chosenName);	
-				ElementName =BattleAgainst.get(indexofelement).GetElement();
-				setHarm1 = SetHarmAssignment(ElementName);
-				player1score = BattleAgainst.get(indexofelement).GetHealth();
-			
-				player2=chosenName2;
-				indexofelement= IndexFinder (BattleAgainst, chosenName);	
-				ElementName =BattleAgainst.get(indexofelement).GetElement();
-				setHarm2 = SetHarmAssignment(ElementName);
-				player2score= BattleAgainst.get(indexofelement).GetHealth();
-			
-			}
-			
-			//GETTING THE ELEMENT INFO FROM THE CHARACTERLIST OF 'CHOSENNAME2' (IF ITS A TRAINER OR A KUDOMON)
-			indexofelement= IndexFinder (BattleAgainst, chosenName);	
-			CheckElement =BattleAgainst.get(indexofelement).GetElement();
+		//GETTING THE ELEMENT INFO FROM THE CHARACTERLIST OF 'CHOSENNAME2' (IF ITS A TRAINER OR A KUDOMON)		
+		int indexofelement2= IndexFinder (BattleAgainst, chosenName2);		
+		String CheckElement2 =BattleAgainst.get(indexofelement2).GetElement();
+		String ElementName2 =BattleAgainst.get(indexofelement2).GetElement();
+		int setHarm2 = SetHarmAssignment(ElementName2);
+		int player2score= BattleAgainst.get(indexofelement2).GetHealth();
 		
-			//IF 'CHOSENNAME2' IS A TRAINER THEN HUMAN PLAYS FIRST
-			if (CheckElement == "Trainer") {
-			
-				player1=chosenName2; 
-				indexofelement= IndexFinder (BattleAgainst, chosenName);	
-				ElementName =BattleAgainst.get(indexofelement).GetElement();
-				setHarm2 = SetHarmAssignment(ElementName);
-				player2score = BattleAgainst.get(indexofelement).GetHealth();
-			
-				player2=chosenName;
-				indexofelement= IndexFinder (BattleAgainst, chosenName);	
-				ElementName =BattleAgainst.get(indexofelement).GetElement();
-				setHarm1 = SetHarmAssignment(ElementName);
-				player1score= BattleAgainst.get(indexofelement).GetHealth();
-			}
 		
-			//IF NONE OF THE GIVEN NAMES ARE TRAINERS THEN A RANDOM KUDOMON IS CHOSEN TO BE PLAYER 1 AND 2
-			if (Switch == 1) {
+		//TAKING ACCOUNT OF ALL COMBINATIONS OF PLAYERS AND ASSIGNING THEM APPROPRIATELY TO PLAYERS 1 & 2
+		if ((CheckElement == "Trainer") && (CheckElement2 == "Trainer")){
 			
-				player1=chosenName;	
-				indexofelement= IndexFinder (BattleAgainst, chosenName);	
-				ElementName =BattleAgainst.get(indexofelement).GetElement();
-				setHarm1 = SetHarmAssignment(ElementName);
-				player1score = BattleAgainst.get(indexofelement).GetHealth();
+			if (Switch ==1 ) {player1 = chosenName2; player2 = chosenName;}
+			else {player1 = chosenName; player2 = chosenName2;}
+
+		} else if ((CheckElement != "Trainer") && (CheckElement2 == "Trainer")){
 			
-				player2=chosenName2;
-				indexofelement= IndexFinder (BattleAgainst, chosenName);	
-				ElementName =BattleAgainst.get(indexofelement).GetElement();
-				setHarm2 = SetHarmAssignment(ElementName);
-				player2score= BattleAgainst.get(indexofelement).GetHealth();
-			}
-				else {
-				
-					player1=chosenName2; 
-					indexofelement= IndexFinder (BattleAgainst, chosenName);	
-					ElementName =BattleAgainst.get(indexofelement).GetElement();
-					setHarm1 = SetHarmAssignment(ElementName);
-					player1score = BattleAgainst.get(indexofelement).GetHealth();
-				
-					player2=chosenName;
-					indexofelement= IndexFinder (BattleAgainst, chosenName);	
-					ElementName =BattleAgainst.get(indexofelement).GetElement();
-					setHarm2 = SetHarmAssignment(ElementName);
-					player2score= BattleAgainst.get(indexofelement).GetHealth();
-				
-				}
-	
+			player1 = chosenName2; player2 = chosenName;
+		}
+		else if ((CheckElement == "Trainer") && (CheckElement2 != "Trainer")) {
+			
+			player1 = chosenName; player2 = chosenName2;
+			
+		}
+		else if  ((CheckElement != "Trainer") && (CheckElement2 != "Trainer")) {
+			
+			if (Switch ==1 ) {player1 = chosenName2; player2 = chosenName;}
+			else {player1 = chosenName; player2 = chosenName2;}
+		}
+
 
 			//SETTING THE MOTION FOR THE ACTUAL BATTLE
-			boolean win = false;
-			while ((player1score > 0) && (player2score >0)) {
+			String winner = "";
+			System.out.println("player 1 is: " + player1 + ", Player score: " + player1score);
+			System.out.println("player 2 is: " + player2 + ", Player score: " + player2score);
+			System.out.println();
+			while ((player1score >= 0) || (player2score >= 0)) {
 			
 				//PLAYER 1 INFLICTS HARM FIRST, UPDATES THE HEALTH SCORE
+				System.out.println("BEFORE==>"+player2score);
 				player2score= player2score-setHarm1;
+				System.out.println("SH==>"+setHarm1);
+				System.out.println("PS2==>"+player2score);
+				
+				if ((player2score <= 0)) {System.out.println("Winner is " + player1);break;}	
 			
 				//PLAYER 2 INFLICTS HARM SECOND, UPDATES THE HEALTH SCORE
+				System.out.println("BEFORE==>"+player1score);
 				player1score=player1score-setHarm2;
-				
-				//RETURNING WINNERS!
-				if (player1score <=0) {	win = true; return "Winner is " + player1; }
-				else if (player2score <=0) { win = true; return "Winner is " + player2;	}
-				else {return "nobody won!"; }
-				
+				System.out.println("SH==>"+setHarm2);
+				System.out.println("PS1==>"+player1score);
+
+				if (player1score <= 0) {System.out.println("Winner is " + player2);break;}
+	
 		}
-			System.out.println(player1score); System.out.println(player2score);
-			
-			return "--";
-			
-
-			
-		
 	}
-
 	
 	static public int SetHarmAssignment (String ElementName) {
 	
@@ -189,12 +144,13 @@ public static void main(String[] args) {
 		String Elementname = ElementName;
 	
 		switch (Elementname) {
-		case "water" : setHarm = 10; break;
-		case "electric" : setHarm = 20; break;
-		case "rock" : setHarm = 30; break;
-		case "grass" : setHarm = 40; break;
-		case "fire" : setHarm = 50; break;
-		case "Trainer" : setHarm = UI(10,50); break;
+		case "Trainer" : setHarm = (UI(2,10)); break;
+		case "water" : setHarm = 2; break;
+		case "electric" : setHarm = 4; break;
+		case "rock" : setHarm = 6; break;
+		case "grass" : setHarm = 8; break;
+		case "fire" : setHarm = 10; break;
+		
 		
 		}
 		return setHarm;
@@ -279,7 +235,7 @@ public static void main(String[] args) {
 			SmallFoundList.add(new PairedChar (
 					(SmallSearchList.get(indexofvalue).GetKName()), SmallSearchList.get(indexofvalue).GetKelement(), SmallSearchList.get(indexofvalue).GetKHealth(), SmallSearchList.get(indexofvalue).GetKhorizontalIndex(), SmallSearchList.get(indexofvalue).GetKverticalIndex(), 
 					SmallSearchList.get(indexofvalue).GetTName(), SmallSearchList .get(indexofvalue).GetTelement(), SmallSearchList.get(indexofvalue).GetTHealth(), SmallSearchList.get(indexofvalue).GetThorizontalIndex(),SmallSearchList.get(indexofvalue).GetTverticalIndex(),
-					distancevalue)); //everything is right except the distancevalue. Its not references so its generating a random one.
+					distancevalue)); 
 		
 			//CLEAR LISTS FOR NEXT ITERATION
 			SmallSearchList.clear();
